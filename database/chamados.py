@@ -1,0 +1,55 @@
+import sqlite3 
+from database.conexao import criar_conexao
+
+
+def criar_chamado(titulo, descricao, prioridade):
+    """
+    Insere um novo chamado na tabela 'chamados'.
+    Prioridades sugeridas: 'Baixa', 'Média', 'Alta'
+    """
+    conn = criar_conexao()
+    cursor = conn.cursor()
+
+    # Query SQL para inserir o registro
+    sql = """
+    INSERT INTO chamados (titulo, descricao, prioridade)
+    VALUES (?, ?, ?)
+    """
+
+    try:
+        cursor.execute(sql, (titulo, descricao, prioridade))
+        conn.commit()
+        print(f"✅ [SUCESSO] Chamado '{titulo}' cadastrado com sucesso!")
+    except sqlite3.Error as e:
+        print(f"❌ [ERRO] Falha ao cadastrar chamado: {e}")
+    finally:
+        conn.close()
+
+def listar_chamados():
+    """
+    Busca e exibe todos os chamados cadastrados no banco de dados.
+    """
+    conn = criar_conexao()
+    cursor = conn.cursor()
+    
+    sql = "SELECT id, titulo, descricao, prioridade, status, data_criacao FROM chamados"
+    
+    try:
+        cursor.execute(sql)
+        chamados = cursor.fetchall()
+        
+        if not chamados:
+            print("\n📭 Nenhum chamado encontrado.")
+            return
+            
+        print("\n=== LISTA DE CHAMADOS ===")
+        for c in chamados:
+            print(f"ID: {c[0]} | Título: {c[1]} | Prioridade: {c[3]} | Status: {c[4]}")
+            print(f"Descrição: {c[2]}")
+            print(f"Data: {c[5]}")
+            print("-" * 40)
+            
+    except sqlite3.Error as e:
+        print(f"❌ [ERRO] Falha ao listar chamados: {e}")
+    finally:
+        conn.close()        
