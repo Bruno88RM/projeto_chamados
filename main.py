@@ -25,7 +25,12 @@
 #     main()
 
 from database.conexao import inicializar_banco
-from database.chamados import criar_chamado, listar_chamados, atualizar_status
+from database.chamados import (
+    criar_chamado, 
+    listar_chamados, 
+    atualizar_status, 
+    deletar_chamado
+)
 
 def exibir_menu():
     print("\n" + "="*35)
@@ -34,6 +39,7 @@ def exibir_menu():
     print("1 - Cadastrar Novo Chamado")
     print("2 - Listar Todos os Chamados")
     print("3 - Atualizar Status de um Chamado")
+    print("4 - Excluir um Chamado")
     print("0 - Sair do Sistema")
     print("="*35)
 
@@ -42,7 +48,7 @@ def main():
     
     while True:
         exibir_menu()
-        opcao = input("Escolha uma opção (0-3): ").strip()
+        opcao = input("Escolha uma opção (0-4): ").strip()
         
         if opcao == "1":
             print("\n--- CADASTRO DE CHAMADO ---")
@@ -82,13 +88,31 @@ def main():
                     
             except ValueError:
                 print("\n⚠️ Por favor, digite um número de ID válido.")
+
+        elif opcao == "4":
+            print("\n--- EXCLUIR CHAMADO ---")
+            listar_chamados()
+            
+            try:
+                id_chamado = int(input("\nDigite o ID do chamado que deseja EXCLUIR: "))
+                
+                # Trava de segurança para não apagar sem querer
+                confirmacao = input(f"Tem certeza que deseja apagar o chamado ID {id_chamado}? (s/n): ").strip().lower()
+                
+                if confirmacao == 's':
+                    deletar_chamado(id_chamado)
+                else:
+                    print("\nOperação cancelada!")
+                    
+            except ValueError:
+                print("\n⚠️ Por favor, digite um número de ID válido.")
             
         elif opcao == "0":
             print("\nEncerrando o sistema... Até mais!")
             break
             
         else:
-            print("\n⚠️ Opção inválida! Digite 1, 2, 3 ou 0.")
+            print("\n⚠️ Opção inválida! Digite uma opção de 0 a 4.")
 
 if __name__ == "__main__":
     main()

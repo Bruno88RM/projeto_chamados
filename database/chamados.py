@@ -75,4 +75,26 @@ def atualizar_status(id_chamado, novo_status):
     except Exception as e:
         print(f"\n❌ [ERRO] Falha ao atualizar o chamado: {e}")
     finally:
-        conn.close()                
+        conn.close()  
+
+def deletar_chamado(id_chamado):
+    """Exclui um chamado do banco de dados pelo seu ID."""
+    try:
+        conn = criar_conexao()
+        cursor = conn.cursor()
+        
+        # O DELETE remove permanentemente a linha informada pelo ID
+        sql = "DELETE FROM chamados WHERE id = ?"
+        cursor.execute(sql, (id_chamado,))
+        
+        conn.commit()
+        
+        if cursor.rowcount > 0:
+            print(f"\n🗑️ [SUCESSO] Chamado ID {id_chamado} removido do sistema!")
+        else:
+            print(f"\n⚠️ [AVISO] Nenhum chamado foi encontrado com o ID {id_chamado}.")
+            
+    except Exception as e:
+        print(f"\n❌ [ERRO] Falha ao deletar o chamado: {e}")
+    finally:
+        conn.close()                      
