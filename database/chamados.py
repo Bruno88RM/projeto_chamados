@@ -52,4 +52,27 @@ def listar_chamados():
     except sqlite3.Error as e:
         print(f"❌ [ERRO] Falha ao listar chamados: {e}")
     finally:
-        conn.close()        
+        conn.close()
+
+def atualizar_status(id_chamado, novo_status):
+    """Atualiza o status de um chamado pelo seu ID."""
+    try:
+        conn = criar_conexao()
+        cursor = conn.cursor()
+        
+        # O UPDATE altera dados de linhas que já existem no banco
+        sql = "UPDATE chamados SET status = ? WHERE id = ?"
+        cursor.execute(sql, (novo_status, id_chamado))
+        
+        conn.commit()
+        
+        # cursor.rowcount nos diz quantas linhas foram modificadas
+        if cursor.rowcount > 0:
+            print(f"\n✅ [SUCESSO] Status do chamado ID {id_chamado} alterado para '{novo_status}'!")
+        else:
+            print(f"\n⚠️ [AVISO] Nenhum chamado foi encontrado com o ID {id_chamado}.")
+            
+    except Exception as e:
+        print(f"\n❌ [ERRO] Falha ao atualizar o chamado: {e}")
+    finally:
+        conn.close()                
