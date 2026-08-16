@@ -10,9 +10,8 @@ Este projeto é um sistema desenvolvido para gerenciamento e acompanhamento de c
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Linguagem de Programação:** Python / Java *(Ajuste conforme as linguagens que usou no projeto)*
+* **Linguagem de Programação:** Python 
 * **Banco de Dados:** MySQL
-* **Interface:** HTML / CSS
 
 ## 🎯 Objetivo do Projeto
 
